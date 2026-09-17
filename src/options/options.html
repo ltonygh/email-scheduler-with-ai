@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Email Scheduler with AI</title>
+        <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            max-width: 560px; margin: 40px auto; padding: 0 20px; color: #1f1f1f; }
+        h1 { font-size: 22px; }
+        label { display: block; margin: 18px 0 6px; font-weight: 600; font-size: 14px; }
+        input, select { width: 100%; padding: 9px 10px; font-size: 14px;
+            border: 1px solid #d1d5db; border-radius: 8px; box-sizing: border-box; background: #fff; color: #1f1f1f; }
+        input:focus, select:focus { outline: none; border-color: #2563eb; }
+        .hint { font-size: 12px; color: #666; margin-top: 4px; }
+        .actions { margin-top: 24px; display: flex; gap: 12px; align-items: center; }
+        button { padding: 10px 18px; font-weight: 600; border-radius: 8px;
+            border: none; cursor: pointer; background: #2563eb; color: #fff; transition: background 0.1s ease; }
+        button:hover { background: #1d4ed8; }
+        #status { font-size: 13px; color: #16a34a; font-weight: 500; }
+        .auth-section { margin-top: 24px; border-top: 1px solid #d1d5db; padding-top: 16px; }
+        .auth-row { display: flex; gap: 10px; align-items: center; margin-top: 6px; }
+        .btn-auth { background: #16a34a; }
+        .btn-auth:hover { background: #15803d; }
+        .btn-ghost { background: #f3f4f6; color: #333; border: 1px solid #d1d5db; }
+        .btn-ghost:hover { background: #e5e7eb; }
+        .btn-danger { background: #dc2626; }
+        .btn-danger:hover { background: #b91c1c; }
+        .auth-status { display: block; font-size: 13px; margin-top: 10px; font-weight: 500; }
+
+        button.is-success,
+        .btn-auth.is-success {
+            background: #f3f4f6;
+            color: #16a34a;
+            border: 1px solid #d1d5db;
+        }
+        button.is-success:hover,
+        .btn-auth.is-success:hover { background: #f3f4f6; }
+
+        .input-with-toggle { position: relative; }
+        .input-with-toggle input { padding-right: 44px; }
+        .btn-reveal {
+            position: absolute;
+            top: 50%;
+            right: 6px;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            padding: 0;
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+            color: #6b7280;
+            cursor: pointer;
+        }
+        .btn-reveal:hover { background: #f3f4f6; color: #374151; }
+        .btn-reveal .eye-off { display: none; }
+        .btn-reveal.is-revealed .eye-on { display: none; }
+        .btn-reveal.is-revealed .eye-off { display: block; }
+
+        .test-result {
+            margin-top: 14px;
+            padding: 12px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-break: break-word;
+            border: 1px solid #d1d5db;
+            background: #f9fafb;
+            color: #374151;
+        }
+        .test-result.ok    { background: #f0fdf4; border-color: #bbf7d0; color: #166534; }
+        .test-result.fail  { background: #fef2f2; border-color: #fecaca; color: #b91c1c; }
+        .test-result code  { font-size: 12px; word-break: break-all; }
+
+        .url-normalized {
+            font-size: 12px;
+            color: #2563eb;
+            margin-top: 4px;
+        }
+        .hint code {
+            background: #f3f4f6;
+            padding: 1px 5px;
+            border-radius: 4px;
+            font-size: 11px;
+        }
+        </style>
+    </head>
+
+
+    <body>
+        <h1>Email Scheduler with AI</h1>
+        <h2>Settings</h2>
+
+        <label for="aiKey">AI Provider API Key</label>
+        <div class="input-with-toggle">
+            <input id="aiKey" data-storage-key="aiApiKey" type="password" placeholder="AIza... / sk-or-... / ollama" autocomplete="off" />
+            <button id="revealKey" class="btn-reveal" type="button" aria-label="Show key" title="Show key">
+                <svg class="eye-on" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                <svg class="eye-off" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+            </button>
+        </div>
+        <div class="hint">
+            A valid provider key. If the provider is offline local, save it as a dummy string.
+        </div>
+
+        <label for="aiModel">AI Model</label>
+        <input id="aiModel" data-storage-key="aiModel" type="text" placeholder="google/gemini-flash-1.5" />
+
+        <label for="routingTarget">Calendar Routing Target</label>
+        <select id="routingTarget" data-storage-key="targetRouting">
+            <option value="google">Google Calendar API (default)</option>
+            <!--
+            <option value="custom">Custom Web Application API (coming soon)</option>
+            -->
+        </select>
+
+        <label for="customApiUrl">Custom API URL</label>
+        <input id="customApiUrl" data-storage-key="customApiUrl" type="url" placeholder="https://api.deepseek.com" />
+        <div class="hint">
+            The OpenAI-compatible chat-completions endpoint. If you omit the path,
+            <code>/v1/chat/completions</code> is added automatically.
+        </div>
+        <div id="urlNormalized" class="url-normalized" hidden></div>
+
+        <div class="actions">
+            <button id="save">Save</button>
+            <button id="testAi" class="btn-ghost" type="button">Test Connection</button>
+            <span id="status"></span>
+        </div>
+
+        <div id="aiTestResult" class="test-result" hidden></div>
+
+        <div class="auth-section">
+            <h2>Google Calendar Connection</h2>
+            <div class="auth-row">
+                <button id="authGoogle" class="btn-auth">Link Google Calendar Account</button>
+                <button id="revokeGoogle" class="btn-danger" type="button">Disconnect</button>
+            </div>
+            <div class="hint">
+                Grants the extension read/write access to your Google Calendar to detect
+                conflicts and create events.
+                <strong>Disconnect</strong> will revoke access and clear the cached token.
+            </div>
+            <span id="authStatus" class="auth-status"></span>
+        </div>
+
+        <script type="module" src="options.js"></script>
+    </body>
+</html>

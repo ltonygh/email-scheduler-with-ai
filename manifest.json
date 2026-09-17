@@ -1,0 +1,60 @@
+    {
+        "manifest_version": 3,
+        "name": "Email Scheduler with AI",
+        "version": "0.2.0",
+        "description": "Extract scheduling details from highlighted emails and write them to your calendar using AI.",
+        "action": {
+            "default_title": "Email Scheduler with AI",
+            "default_popup": "src/popup/popup.html"
+        },
+        "options_page": "src/options/options.html",
+        "background": {
+            "service_worker": "src/background/background.js",
+            "type": "module"
+        },
+        "permissions": [
+            "contextMenus",
+            "storage",
+            "identity",
+            "scripting",
+            "activeTab"
+        ],
+        "host_permissions": [
+            "https://mail.google.com/*",
+            "https://outlook.office.com/*",
+            "https://outlook.live.com/*",
+            "https://www.googleapis.com/*",
+            "https://openrouter.ai/*",
+            "http://localhost:*/*",
+            "http://127.0.0.1:*/*"
+        ],
+        "oauth2": {
+            "client_id": "481790453443-4u5derbch9d1v5fk965hmttk03nc7lra.apps.googleusercontent.com",
+            "scopes": [
+                "https://www.googleapis.com/auth/calendar.events",
+                "https://www.googleapis.com/auth/calendar.readonly"
+            ]
+        },
+        "content_scripts": [
+            {
+                "matches": [
+                    "https://mail.google.com/*",
+                    "https://outlook.office.com/*",
+                    "https://outlook.live.com/*"
+                ],
+                "js": ["src/content/content.js"],
+                "css": ["src/content/content.css"],
+                "run_at": "document_idle"
+            }
+        ],
+        "web_accessible_resources": [
+            {
+                "resources": ["src/content/*"],
+                "matches": [
+                    "https://mail.google.com/*",
+                    "https://outlook.office.com/*",
+                    "https://outlook.live.com/*"
+                ]
+            }
+        ]
+    }

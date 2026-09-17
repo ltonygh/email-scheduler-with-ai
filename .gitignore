@@ -1,0 +1,14 @@
+node_modules/
+.env.*
+*.local
+secrets.json
+config.local.js
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+dist/
+build/
+*.zip
+*.crx
+*.pem
