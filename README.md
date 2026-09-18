@@ -26,7 +26,7 @@ git clone https://github.com/ltonygh/email-scheduler-with-ai
 ```
 
 2. Open `chrome://extensions/`, toggle `Developer mode` (Top right of the page) to **ON**, click `Load Unpacked` and select the downloaded folder.
-3. Connect to Google Calendar in the Options page by `Extensions` > `Email Scheduler with AI` > `More Options` > `Options` > `Google Calendar Connection`, then click `Link Google Calendar Account` and complete the sign-in with the whitelisted Gmail account. Google will show a "Google hasn't verified this app" notice. click `Advanced` > `Continue` to proceed, then enable all requested permissions. 
+3. Connect to Google Calendar in the Options page by `Extensions` > `Email Scheduler with AI` > `More Options` > `Options` > `Google Calendar Connection`, then click `Link Google Calendar Account` and complete the sign-in with the whitelisted Gmail account. Google will show a "Google hasn't verified this app" notice. click `Advanced` > `Continue` to proceed, then enable all requested permissions.
 
 The extension is currently in test phase, and non-whitelisted Gamil accounts are unable to sign in. Contact the developer if you wish to try out the extension.
 
@@ -36,12 +36,12 @@ The extension is currently in test phase, and non-whitelisted Gamil accounts are
 
 The extension works with any OpenAI-compatible Chat Completions endpoint. Configure it in the Options page by `Extensions` > `Email Scheduler with AI` > `More Options` > `Options` > `Settings`.
 
-| Provider         | Custom API URL                                  | Example model               | API key                                        |
-| ---------------- | ----------------------------------------------- | --------------------------- | ---------------------------------------------- |
-| Ollama (Local)   |  `http://localhost:11434/`                      | `qwen2.5:7b`                | Leave empty, or use `ollama` as dummy string. |
-| OpenRouter       | `https://openrouter.ai/api`                     | `google/gemini-flash-1.5`   | OpenRouter token                               |
-| DeepSeek         | `https://api.deepseek.com`                      | `deepseek-chat`             | DeepSeek key                                   |
-| Google AI Studio | An OpenAI-compatible bridge is required         | -                           | -                                              |
+| Provider         | Custom API URL                          | Example model               | API key                                        |
+| ---------------- | --------------------------------------- | --------------------------- | ---------------------------------------------- |
+| Ollama (Local)   | `http://localhost:11434/`             | `qwen2.5:7b`              | Leave empty, or use`ollama` as dummy string. |
+| OpenRouter       | `https://openrouter.ai/api`           | `google/gemini-flash-1.5` | OpenRouter token                               |
+| DeepSeek         | `https://api.deepseek.com`            | `deepseek-chat`           | DeepSeek key                                   |
+| Google AI Studio | An OpenAI-compatible bridge is required | -                           | -                                              |
 
 Use `Test Connection` to verify whether the configured endpoint is listening to requests. If successful, an OK (200) status is returned.
 
@@ -49,17 +49,43 @@ Use `Test Connection` to verify whether the configured endpoint is listening to 
 
 ### Ollama Setup (Recommended)
 
-Ollama is recommended to prevent email content from reaching the Internet. To configure Ollama, follow the steps below:
+Ollama is recommended to prevent email content from reaching the Internet and gaurentee data privacy. To configure Ollama, follow the steps below:
 
 1. Install Ollama from https://ollama.com/download.
-2. Add the extension origin for Ollama to pick up requests from Chrome Extension:
+2. Add the extension origin for Ollama to pick up requests from Chrome Extension (Ollama must be completely terminated during the setup):
 
-   ```powershell
-   [Environment]::SetEnvironmentVariable("OLLAMA_ORIGINS","chrome-extension://*","User")
-   ```
+   1. Windows
 
-   or
-   `Start` > `Edit the System Environment Variables` > `Environment Variables` > `User Variables` > `New User Variables` > `OLLAMA_ORIGINS = chrome-extension://*`
+      ```Shell
+      [Environment]::SetEnvironmentVariable("OLLAMA_ORIGINS","chrome-extension://*","User")
+      ```
+
+      or alternatively,
+      `Start` > `Edit the System Environment Variables` > `Environment Variables` > `User Variables` > `New User Variables` > `OLLAMA_ORIGINS = chrome-extension://*`
+   2. Mac
+
+      ```Shell
+      OLLAMA_ORIGINS="chrome-extension://*" ollama serve
+      ```
+   3. Linux
+
+      ```Shell
+      sudo systemctl edit ollama.service
+      ```
+
+      then add the following lines into the text editor
+
+      ```
+      [Service]
+      Environment="OLLAMA_ORIGINS=chrome-extension://*"
+      ```
+
+      save and close the editor, and restart the service through the terminal
+
+      ```Shell
+      sudo systemctl daemon-reload
+      sudo systemctl restart ollama
+      ```
 3. Pull a model, e.g. `ollama pull qwen2.5:7b`. For a list of models, visit (https://ollama.com/search).
 4. Run Ollama in the terminal:
 
