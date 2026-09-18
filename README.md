@@ -38,20 +38,20 @@ The extension works with any OpenAI-compatible Chat Completions endpoint. Config
 
 | Provider         | Custom API URL                                  | Example model               | API key                                        |
 | ---------------- | ----------------------------------------------- | --------------------------- | ---------------------------------------------- |
-| Ollama (Local)   |  `http://localhost:11434/v1/chat/completions` | `qwen2.5:7b`              | Leave empty, or use`ollama` as dummy string. |
-| OpenRouter       | `https://openrouter.ai/api`                   | `google/gemini-flash-1.5` | OpenRouter token                               |
-| DeepSeek         | `https://api.deepseek.com`                    | `deepseek-chat`           | DeepSeek key                                   |
+| Ollama (Local)   |  `http://localhost:11434/`                      | `qwen2.5:7b`                | Leave empty, or use `ollama` as dummy string. |
+| OpenRouter       | `https://openrouter.ai/api`                     | `google/gemini-flash-1.5`   | OpenRouter token                               |
+| DeepSeek         | `https://api.deepseek.com`                      | `deepseek-chat`             | DeepSeek key                                   |
 | Google AI Studio | An OpenAI-compatible bridge is required         | -                           | -                                              |
 
 Use `Test Connection` to verify whether the configured endpoint is listening to requests. If successful, an OK (200) status is returned.
 
 ---
 
-### Ollama (Recommended)
+### Ollama Setup (Recommended)
 
 Ollama is recommended to prevent email content from reaching the Internet. To configure Ollama, follow the steps below:
 
-1. Install Ollama from [ollama.com/download](https://ollama.com/download)
+1. Install Ollama from https://ollama.com/download.
 2. Add the extension origin for Ollama to pick up requests from Chrome Extension:
 
    ```powershell
@@ -60,7 +60,7 @@ Ollama is recommended to prevent email content from reaching the Internet. To co
 
    or
    `Start` > `Edit the System Environment Variables` > `Environment Variables` > `User Variables` > `New User Variables` > `OLLAMA_ORIGINS = chrome-extension://*`
-3. Pull a model, e.g. `ollama pull qwen2.5:7b`. For a list of models, visit [ollama.com/search](https://ollama.com/search).
+3. Pull a model, e.g. `ollama pull qwen2.5:7b`. For a list of models, visit (https://ollama.com/search).
 4. Run Ollama in the terminal:
 
    ```Shell
