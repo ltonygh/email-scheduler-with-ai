@@ -68,6 +68,20 @@ Ollama is recommended to prevent email content from reaching the Internet. To co
    ```
 5. Open the `Email Scheduler with AI` Options page and configure the endpoint according to `AI Configuration`.
 
+---
+
 ### Google AI Studio
 
 Google AI Studio does not natively expose an OpenAI-compatible Chat Completions API, instead its native API uses a Gemini-specific request/response shape. To use it, run an OpenAI-compatible bridge/proxy in front of it, then point the Custom API URL at that bridge.
+
+---
+
+## License
+
+MIT - Copyright 2026 ltonygh
+
+---
+
+## Support
+
+Like this project? Leave a star ⭐ and share with others!
