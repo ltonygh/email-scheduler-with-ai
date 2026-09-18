@@ -152,28 +152,7 @@ export async function extractSchedule(rawText, config) {
     const nowIso = captureCurrentMachineTime();
     const prompt = buildPrompt(rawText, nowIso, now);
 
-
-
-    const requestBody = {
-        model,
-        messages: [
-            {
-                role: 'system',
-                content:
-                    'You are an expert scheduling extraction engine. Respond with a single JSON object matching the schema. Do not include markdown or code fences.',
-            },
-            { role: 'user', content: prompt },
-        ],
-        temperature: 0.2,
-        response_format: {
-            type: 'json_schema',
-            json_schema: {
-                name: 'ScheduleSchema',
-                strict: true,
-                schema: SCHEDULE_JSON_SCHEMA,
-            },
-        },
-    };
+    const requestBody = buildRequestBody(endpoint, model, prompt);
 
     const response = await fetch(endpoint, {
         method: 'POST',
@@ -371,9 +350,26 @@ export async function testAiConnection(config) {
 
     const requestBody = {
         model,
-        messages: [{ role: 'user', content: 'ping' }],
-        max_tokens: 1,
+        messages: [
+            { role: 'system', content: 'Reply with a tiny JSON object.' },
+            { role: 'user', content: 'Return {} as JSON.' },
+        ],
         temperature: 0,
+        max_tokens: 16,
+        response_format: supportsJsonSchema(endpoint)
+            ? {
+                type: 'json_schema',
+                json_schema: {
+                    name: 'ConnectionProbe',
+                    strict: true,
+                    schema: {
+                        type: 'object',
+                        properties: {},
+                        additionalProperties: false,
+                    },
+                },
+            }
+            : { type: 'json_object' },
     };
 
     let response;
@@ -470,6 +466,53 @@ function explainStatus(status, isCustomEndpoint) {
 function truncate(str, max) {
     const s = String(str || '');
     return s.length > max ? `${s.slice(0, max)}…` : s;
+}
+
+/**
+ * Build the chat-completions request body, choosing a response_format the that the respective endpoint supports.
+ * @param {string} endpoint
+ * @param {string} model
+ * @param {string} prompt
+ * @returns {object}
+ */
+function buildRequestBody(endpoint, model, prompt) {
+    const body = {
+        model,
+        messages: [
+            {
+                role: 'system',
+                content:
+                    'You are an expert scheduling extraction engine. Respond with a single JSON object matching the schema. Do not include markdown or code fences.',
+            },
+            { role: 'user', content: prompt },
+        ],
+        temperature: 0.2,
+    };
+
+    if (supportsJsonSchema(endpoint)) {
+        body.response_format = {
+            type: 'json_schema',
+            json_schema: {
+                name: 'ScheduleSchema',
+                strict: true,
+                schema: SCHEDULE_JSON_SCHEMA,
+            },
+        };
+    } else {
+        body.response_format = { type: 'json_object' };
+    }
+
+    return body;
+}
+
+/**
+ * Whether an endpoint supports OpenAI Structured Outputs.
+ * @param {string} endpoint
+ * @returns {boolean}
+ */
+function supportsJsonSchema(endpoint) {
+    const host = safeHostname(endpoint);
+    return host.includes('openrouter.ai') || host.includes('api.openai.com');
 }
 
 /**

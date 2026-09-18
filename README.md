@@ -17,8 +17,6 @@ emails (Gmail / Outlook) and writes them to calendars using AI.
 
 ## Installation and Setup
 
-You may contact the developer through email (tonyliangfungyuen@gmail.com) to get your Gmail account whitelisted before using this extension. To install and setup the extension:
-
 1. Download or clone the repository folder:
 
 ```powershell
@@ -28,7 +26,13 @@ git clone https://github.com/ltonygh/email-scheduler-with-ai
 2. Open `chrome://extensions/`, toggle `Developer mode` (Top right of the page) to **ON**, click `Load Unpacked` and select the downloaded folder.
 3. Connect to Google Calendar in the Options page by `Extensions` > `Email Scheduler with AI` > `More Options` > `Options` > `Google Calendar Connection`, then click `Link Google Calendar Account` and complete the sign-in with the whitelisted Gmail account. Google will show a "Google hasn't verified this app" notice. click `Advanced` > `Continue` to proceed, then enable all requested permissions.
 
-The extension is currently in test phase, and non-whitelisted Gamil accounts are unable to sign in. Contact the developer if you wish to try out the extension.
+---
+
+## Privacy
+
+This extension does not operate any servers and does not collect your data. The email text you highlight is sent only to the AI endpoint you configure, and events are written to your own Google Calendar. There is no analytics or telemetry.
+
+See the full [Privacy Policy](https://github.com/ltonygh/email-scheduler-with-ai/blob/main/PRIVACY.md) for details.
 
 ---
 
@@ -38,7 +42,7 @@ The extension works with any OpenAI-compatible Chat Completions endpoint. Config
 
 | Provider         | Custom API URL                          | Example model               | API key                                        |
 | ---------------- | --------------------------------------- | --------------------------- | ---------------------------------------------- |
-| Ollama (Local)   | `http://localhost:11434/`             | `qwen2.5:7b`              | Leave empty, or use`ollama` as dummy string. |
+| Ollama (Local)   | `http://localhost:11434/`             | `qwen2.5:7b`              | Leave empty, or use `ollama` as dummy string. |
 | OpenRouter       | `https://openrouter.ai/api`           | `google/gemini-flash-1.5` | OpenRouter token                               |
 | DeepSeek         | `https://api.deepseek.com`            | `deepseek-chat`           | DeepSeek key                                   |
 | Google AI Studio | An OpenAI-compatible bridge is required | -                           | -                                              |
@@ -49,7 +53,7 @@ Use `Test Connection` to verify whether the configured endpoint is listening to 
 
 ### Ollama Setup (Recommended)
 
-Ollama is recommended to prevent email content from reaching the Internet and gaurentee data privacy. To configure Ollama, follow the steps below:
+Ollama is recommended to prevent email content from reaching the Internet and guarantee data privacy. To configure Ollama, follow the steps below:
 
 1. Install Ollama from https://ollama.com/download.
 2. Add the extension origin for Ollama to pick up requests from Chrome Extension (Ollama must be completely terminated during the setup):
