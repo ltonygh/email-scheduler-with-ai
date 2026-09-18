@@ -15,9 +15,7 @@
         "permissions": [
             "contextMenus",
             "storage",
-            "identity",
-            "scripting",
-            "activeTab"
+            "identity"
         ],
         "host_permissions": [
             "https://mail.google.com/*",
