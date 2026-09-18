@@ -96,7 +96,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         persist(true);
     });
 
-    // Auto-append the chat-completions path when the user leaves the URL field.
     const urlNote = document.getElementById('urlNormalized');
     els.customApiUrl.addEventListener('blur', () => {
         const entered = els.customApiUrl.value.trim();
@@ -146,10 +145,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                     result.message,
                     `Status:      ${result.status || '(no response)'}`,
                 ];
-
-                if (result.detail) {
-                    lines.push('', 'Provider response:', result.detail);
-                }
 
                 renderTestResult(lines.join('\n'), result.ok ? 'ok' : 'fail');
             } catch (err) {
