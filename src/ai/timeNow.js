@@ -1,7 +1,6 @@
 import { STORAGE_KEYS } from '../config/config.js';
 
 const OPENROUTER_ENDPOINT = 'https://openrouter.ai/api/v1/chat/completions';
-const DEFAULT_OPENROUTER_MODEL = 'google/gemini-flash-1.5';
 const CHAT_COMPLETIONS_PATH = '/v1/chat/completions';
 
 /**
@@ -138,9 +137,13 @@ export async function extractSchedule(rawText, config) {
     const isCustomEndpoint = customUrl.length > 0;
     const endpoint = isCustomEndpoint ? normalizeEndpoint(customUrl) : OPENROUTER_ENDPOINT;
 
-    const model =
-        (config[STORAGE_KEYS.AI_MODEL] || '').trim() || DEFAULT_OPENROUTER_MODEL;
+    const model = (config[STORAGE_KEYS.AI_MODEL] || '').trim();
 
+    if (!model) {
+        throw new Error(
+            'No AI model configured. Set a model in Options (e.g. qwen2.5:7b for Ollama, deepseek-chat for DeepSeek).',
+        );
+    }
 
     if (!isCustomEndpoint && !apiKey) {
         throw new Error(
@@ -335,9 +338,18 @@ export async function testAiConnection(config) {
     const customUrl = (config[STORAGE_KEYS.CUSTOM_API_URL] || '').trim();
     const isCustomEndpoint = customUrl.length > 0;
     const endpoint = isCustomEndpoint ? normalizeEndpoint(customUrl) : OPENROUTER_ENDPOINT;
-    const model = (config[STORAGE_KEYS.AI_MODEL] || '').trim() || DEFAULT_OPENROUTER_MODEL;
+    const model = (config[STORAGE_KEYS.AI_MODEL] || '').trim();
 
     const base = { status: 0, endpoint, model, isCustomEndpoint, hasKey: Boolean(apiKey), detail: '' };
+
+    if (!model) {
+        return {
+            ...base,
+            ok: false,
+            message:
+                'No AI model configured. Set a model in Options (e.g. qwen2.5:7b for Ollama, deepseek-chat for DeepSeek).',
+        };
+    }
 
     if (!isCustomEndpoint && !apiKey) {
         return {

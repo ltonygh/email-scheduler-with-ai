@@ -9,7 +9,6 @@ import {
 } from '../config/config.js';
 import { testAiConnection, normalizeEndpoint } from '../ai/timeNow.js';
 
-const DEFAULT_MODEL = 'google/gemini-flash-1.5';
 const AUTOSAVE_DEBOUNCE_MS = 400;
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -32,7 +31,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const config = await getConfig();
     els.aiKey.value = config[STORAGE_KEYS.AI_API_KEY] || '';
-    els.aiModel.value = config[STORAGE_KEYS.AI_MODEL] || DEFAULT_MODEL;
+    // No model is pre-filled: the user's provider dictates the model name, so the
+    // field starts empty and relies on its placeholder as a hint (Ollama-first).
+    els.aiModel.value = config[STORAGE_KEYS.AI_MODEL] || '';
     els.routingTarget.value = config[STORAGE_KEYS.ROUTING_TARGET] || 'google';
     els.customApiUrl.value = config[STORAGE_KEYS.CUSTOM_API_URL] || '';
 
@@ -41,7 +42,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     function collectConfig() {
         return {
             [STORAGE_KEYS.AI_API_KEY]: els.aiKey.value.trim(),
-            [STORAGE_KEYS.AI_MODEL]: els.aiModel.value.trim() || DEFAULT_MODEL,
+            // Saved as-is. No file is guessed: an empty model is surfaced as an
+            // error at extraction/test time rather than silently defaulting.
+            [STORAGE_KEYS.AI_MODEL]: els.aiModel.value.trim(),
             [STORAGE_KEYS.ROUTING_TARGET]: els.routingTarget.value,
             [STORAGE_KEYS.CUSTOM_API_URL]: els.customApiUrl.value.trim(),
         };
@@ -54,23 +57,25 @@ document.addEventListener('DOMContentLoaded', async () => {
         flashStatus._timer = setTimeout(() => (els.status.textContent = ''), 2000);
     }
 
-    function flashSaveSuccess() {
+    function markSaved() {
         const btn = els.save;
         if (!btn) return;
         btn.classList.add('is-success');
         btn.textContent = 'Saved';
-        clearTimeout(flashSaveSuccess._timer);
-        flashSaveSuccess._timer = setTimeout(() => {
-            btn.classList.remove('is-success');
-            btn.textContent = 'Save';
-        }, 3000);
+    }
+
+    function resetSaveButton() {
+        const btn = els.save;
+        if (!btn) return;
+        btn.classList.remove('is-success');
+        btn.textContent = 'Save';
     }
 
     async function persist(showStatus) {
         try {
             await setConfig(collectConfig());
             if (showStatus) {
-                flashSaveSuccess();
+                markSaved();
             }
         } catch (err) {
             console.error('[ScheduleAI] Failed to save config:', err);
@@ -82,6 +87,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     let autosaveTimer = null;
     function scheduleAutosave() {
+        resetSaveButton();
         clearTimeout(autosaveTimer);
         autosaveTimer = setTimeout(() => persist(false), AUTOSAVE_DEBOUNCE_MS);
     }
@@ -89,7 +95,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     ['aiKey', 'aiModel', 'customApiUrl'].forEach((key) => {
         els[key].addEventListener('input', scheduleAutosave);
     });
-    els.routingTarget.addEventListener('change', () => persist(false));
+    els.routingTarget.addEventListener('change', () => {
+        resetSaveButton();
+        persist(false);
+    });
 
     els.save.addEventListener('click', () => {
         clearTimeout(autosaveTimer);

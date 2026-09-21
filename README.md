@@ -15,24 +15,16 @@ emails (Gmail / Outlook) and writes them to calendars using AI.
 
 ---
 
-## Installation and Setup
+## Installation
 
-1. Download or clone the repository folder:
+1. Add extension from Chrome Web Store
 
-```powershell
-git clone https://github.com/ltonygh/email-scheduler-with-ai
+```
+https://chromewebstore.google.com/detail/email-scheduler-with-ai/hjfcccpikffkikkneiiaemkmcjkomkam?authuser=0&hl=en-GB&pli=1
 ```
 
-2. Open `chrome://extensions/`, toggle `Developer mode` (Top right of the page) to **ON**, click `Load Unpacked` and select the downloaded folder.
-3. Connect to Google Calendar in the Options page by `Extensions` > `Email Scheduler with AI` > `More Options` > `Options` > `Google Calendar Connection`, then click `Link Google Calendar Account` and complete the sign-in with the whitelisted Gmail account. Google will show a "Google hasn't verified this app" notice. click `Advanced` > `Continue` to proceed, then enable all requested permissions.
-
----
-
-## Privacy
-
-This extension does not operate any servers and does not collect your data. The email text you highlight is sent only to the AI endpoint you configure, and events are written to your own Google Calendar. There is no analytics or telemetry.
-
-See the full [Privacy Policy](https://github.com/ltonygh/email-scheduler-with-ai/blob/main/PRIVACY.md) for details.
+2. Open the extension's Options page by `Extensions` > `Email Scheduler with AI` > `More Options` > `Options`
+3. Under `Google Calendar Connection`, click `Link Google Calendar Account` and complete the sign-in with the whitelisted Gmail account. Google will show a "Google hasn't verified this app" notice. Click `Advanced` > `Continue` to proceed, then enable all requested permissions.
 
 ---
 
@@ -42,20 +34,18 @@ The extension works with any OpenAI-compatible Chat Completions endpoint. Config
 
 | Provider         | Custom API URL                          | Example model               | API key                                        |
 | ---------------- | --------------------------------------- | --------------------------- | ---------------------------------------------- |
-| Ollama (Local)   | `http://localhost:11434/`             | `qwen2.5:7b`              | Leave empty, or use `ollama` as dummy string. |
+| Ollama (Local)   | `http://localhost:11434/`             | `qwen2.5:7b`              | Leave empty, or use`ollama` as dummy string. |
 | OpenRouter       | `https://openrouter.ai/api`           | `google/gemini-flash-1.5` | OpenRouter token                               |
 | DeepSeek         | `https://api.deepseek.com`            | `deepseek-chat`           | DeepSeek key                                   |
 | Google AI Studio | An OpenAI-compatible bridge is required | -                           | -                                              |
 
 Use `Test Connection` to verify whether the configured endpoint is listening to requests. If successful, an OK (200) status is returned.
 
----
-
 ### Ollama Setup (Recommended)
 
 Ollama is recommended to prevent email content from reaching the Internet and guarantee data privacy. To configure Ollama, follow the steps below:
 
-1. Install Ollama from https://ollama.com/download.
+1. Install Ollama from [Ollama Official Website](https://ollama.com/download).
 2. Add the extension origin for Ollama to pick up requests from Chrome Extension (Ollama must be completely terminated during the setup):
 
    1. Windows
@@ -90,7 +80,7 @@ Ollama is recommended to prevent email content from reaching the Internet and gu
       sudo systemctl daemon-reload
       sudo systemctl restart ollama
       ```
-3. Pull a model, e.g. `ollama pull qwen2.5:7b`. For a list of models, visit (https://ollama.com/search).
+3. Pull a model, e.g. `ollama pull qwen2.5:7b`. For a list of models, visit [Ollama Models](https://ollama.com/search).
 4. Run Ollama in the terminal:
 
    ```Shell
@@ -98,11 +88,33 @@ Ollama is recommended to prevent email content from reaching the Internet and gu
    ```
 5. Open the `Email Scheduler with AI` Options page and configure the endpoint according to `AI Configuration`.
 
----
-
 ### Google AI Studio
 
 Google AI Studio does not natively expose an OpenAI-compatible Chat Completions API, instead its native API uses a Gemini-specific request/response shape. To use it, run an OpenAI-compatible bridge/proxy in front of it, then point the Custom API URL at that bridge.
+
+---
+
+## Beta Tester
+
+This extension is currently in a **beta test phase**. Distribution is limited to whitelisted testers, and only whitelisted Gmail accounts can sign in to Google Calendar. If you would like to try it out, contact the developer at **tonyliangfungyuen@gmail.com** to have your Gmail account added to the tester list.
+
+As a beta tester, expect the following:
+
+- The Google consent screen shows a **"Google hasn't verified this app"** notice. Thisis expected before public release. Click `Advanced` > `Continue` to proceed.
+- Some providers and configurations are still being validated; if something fails, sharing the error message (and the `Test Connection` result) helps a lot.
+- The extension updates automatically from the Chrome Web Store; no manual reloadis needed.
+
+Feedback, bug reports, and feature suggestions are welcome and directly shape the roadmap. Thank you for h`elping test the extension!
+
+---
+
+## Privacy
+
+This extension does not operate on any servers hosted by the developer, and does not collect your data. Email content is directly sent to your configured AI endpoint, and events are written to your own Google Calendar. No analytics or telemetry is involved in the process.
+
+	
+
+Read [Privacy Policy](https://github.com/ltonygh/email-scheduler-with-ai/blob/main/PRIVACY.md) for more details.
 
 ---
 
@@ -110,8 +122,12 @@ Google AI Studio does not natively expose an OpenAI-compatible Chat Completions 
 
 MIT - Copyright 2026 ltonygh
 
+Read [License](https://github.com/ltonygh/email-scheduler-with-ai/blob/main/LICENSE.md) for more details.
+
 ---
 
 ## Support
 
 Like this project? Leave a star ⭐ and share with others!
+
+You can also support me through [Buy Me a Coffee](https://buymeacoffee.com/tonyliang) or [Ko-Fi](https://ko-fi.com/radicalbaguette) ☕!
