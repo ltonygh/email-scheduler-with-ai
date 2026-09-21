@@ -41,7 +41,9 @@ The extension works with any OpenAI-compatible Chat Completions endpoint. Config
 
 Use `Test Connection` to verify whether the configured endpoint is listening to requests. If successful, an OK (200) status is returned.
 
-### Ollama Setup (Recommended)
+### Ollama Setup
+
+**Recommended**
 
 Ollama is recommended to prevent email content from reaching the Internet and guarantee data privacy. To configure Ollama, follow the steps below:
 
