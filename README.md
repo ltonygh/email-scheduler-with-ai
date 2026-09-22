@@ -1,7 +1,6 @@
 # Email Scheduler with AI (0.3.1) - Chrome Extension (Manifest V3)
 
-An open-source productivity tool that extracts scheduling details from highlighted
-emails (Gmail / Outlook) and writes them to calendars using AI.
+An open-source productivity tool that extracts scheduling details from highlighted emails (Gmail / Outlook) and writes them to calendars using AI.
 
 ## Workflow
 
@@ -82,7 +81,7 @@ Ollama is recommended to prevent email content from reaching the Internet and gu
       sudo systemctl daemon-reload
       sudo systemctl restart ollama
       ```
-3. Pull a model, e.g. `ollama pull qwen2.5:7b`. For a list of models, visit [Ollama Models](https://ollama.com/search).
+3. Open Terminal, pull a model from Ollama, e.g. `ollama pull qwen2.5:7b`. For a list of models, visit [Ollama Models](https://ollama.com/search).
 4. Run Ollama in the terminal:
 
    ```Shell
@@ -107,8 +106,6 @@ As a beta tester, expect the following:
 - The extension updates automatically from the Chrome Web Store; no manual reloadis needed.
 
 Feedback, bug reports, and feature suggestions are welcome and directly shape the roadmap. Thank you for helping test the extension!
-
----
 
 ## Privacy
 
