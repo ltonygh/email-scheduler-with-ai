@@ -1,4 +1,4 @@
-# Email Scheduler with AI — Chrome Extension (Manifest V3)
+# Email Scheduler with AI (0.3.1) - Chrome Extension (Manifest V3)
 
 An open-source productivity tool that extracts scheduling details from highlighted
 emails (Gmail / Outlook) and writes them to calendars using AI.
@@ -106,15 +106,13 @@ As a beta tester, expect the following:
 - Some providers and configurations are still being validated; if something fails, sharing the error message (and the `Test Connection` result) helps a lot.
 - The extension updates automatically from the Chrome Web Store; no manual reloadis needed.
 
-Feedback, bug reports, and feature suggestions are welcome and directly shape the roadmap. Thank you for h`elping test the extension!
+Feedback, bug reports, and feature suggestions are welcome and directly shape the roadmap. Thank you for helping test the extension!
 
 ---
 
 ## Privacy
 
 This extension does not operate on any servers hosted by the developer, and does not collect your data. Email content is directly sent to your configured AI endpoint, and events are written to your own Google Calendar. No analytics or telemetry is involved in the process.
-
-	
 
 Read [Privacy Policy](https://github.com/ltonygh/email-scheduler-with-ai/blob/main/PRIVACY.md) for more details.
 
