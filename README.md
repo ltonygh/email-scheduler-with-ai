@@ -47,7 +47,7 @@ Use `Test Connection` to verify whether the configured endpoint is listening to 
 Ollama is recommended to prevent email content from reaching the Internet and guarantee data privacy. To configure Ollama, follow the steps below:
 
 1. Install Ollama from [Ollama Official Website](https://ollama.com/download).
-2. Add the extension origin for Ollama to pick up requests from Chrome Extension (Ollama must be completely terminated during the setup):
+2. Add the extension origin for Ollama to pick up requests from Chrome Extension (Ollama must be completely terminated until after the setup):
 
    1. Windows
 
