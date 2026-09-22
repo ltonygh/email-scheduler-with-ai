@@ -101,7 +101,7 @@ This extension is currently in a **beta test phase**. Distribution is limited to
 
 As a beta tester, expect the following:
 
-- The Google consent screen shows a **"Google hasn't verified this app"** notice. Thisis expected before public release. Click `Advanced` > `Continue` to proceed.
+- The Google consent screen shows a **"Google hasn't verified this app"** notice during authorization to use Google Calendar. To proceed with testing, click `Advanced` > `Continue` to proceed.
 - Some providers and configurations are still being validated; if something fails, sharing the error message (and the `Test Connection` result) helps a lot.
 - The extension updates automatically from the Chrome Web Store; no manual reloadis needed.
 
